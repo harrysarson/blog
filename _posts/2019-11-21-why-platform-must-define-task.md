@@ -11,10 +11,10 @@ type Task err ok = Task
 ```
 
 This is possibly the most important type in the elm runtime and yet, as far as elm code can tell, contains no data.
-This is a stub definition, elm's typechecker can use it to verify that elm code using `Task`s is written correctly [1][1].
+This is a stub definition, elm's typechecker can use it to verify that elm code using `Task`s is written correctly&nbsp;<span id="a1">[[1]](#f1)</span>.
 
 My goal is to create a runtime for elm mostly written in elm, and so the definition of the `Task` type seemed a good place to start.
-After much iteration[2][2] I settled on the following definition of a `Task` which I placed in a new module `Platform.Scheduler`.
+After much iteration&nbsp;<span id="a2">[[2]](#f2)</span> I settled on the following definition of a `Task` which I placed in a new module `Platform.Scheduler`.
 
 ```elm
 module Platform.Scheduler exposing (Task(..), DoneCallback, TryAbortAction)
@@ -69,5 +69,5 @@ Next time I will explain the issues I faced when trying to do just that.
 
 ---
 
-[1]: With this definition, the compiler can not provide any help to the code implementing elm's runtime.
-[2]: Maybe that iteration will be the subject of a future post.
+* <b id="f1">[1](#a1)</b> With this definition, the compiler can not provide any b to the code implementing elm's runtime.
+* <b id="f2">[2](#a2)</b> Maybe that iteration will be the subject of a future post.

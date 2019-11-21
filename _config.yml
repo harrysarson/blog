@@ -5,3 +5,6 @@ pages_list:
 
 paginate: 1
 baseurl: "blog"
+
+gems:
+  - jekyll-paginate

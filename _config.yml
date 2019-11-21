@@ -3,5 +3,5 @@ theme: jekyll-theme-minimal
 pages_list:
   Archive: '/archive'
 
-github:
-  repo:           github.com/harrysarson/blog
+paginate: 1
+baseurl: "blog"

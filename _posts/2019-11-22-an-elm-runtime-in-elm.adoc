@@ -1,0 +1,37 @@
+= An elm runtime written in elm
+Harry Sarson
+2019-11-22, elm 0.19.1
+
+NOTE: I am writing this post in response to a comment on my link:./2019-11-21-why-platform-must-define-task.md[last post] suggesting that, as a platform-y thing, the elm runtime should be written platform specific code.
+
+The elm runtime must do three things:
+
+. Detect external, asynchronous events.
+. [[inform-elm-app]] Inform the elm application about these detected events by passing it information describing the event.
+. Perform actions as requested by the elm application.
+
+In response to the runtime, the elm application must
+
+. Update its state.
+. Instruct the runtime to perform actions.
+. Inform the runtime about which asynchronous events it should be detecting.
+
+The diagram below summarises these interactions.
+My claim is that most of the work done by the elm runtime consists of piping data between the various components.
+I have marked in blue ink all the routes that the runtime passes data along.
+
+image::../_images/elm-runtime.jpg[The elm runtime in diagram form]
+
+Currently, only the `APP` and `EVENT MANAGER` footnote:[Event managers require special elm syntax only available to core components.] components are written in elm.
+My hope is to write the `MANAGE STATE` component in elm too.
+
+The runtime must use kernel code to interact with the world (detecting events and performing actions) though use of non-pure functions.
+The rest of the elm runtime manipulates data -- this is the most complex and bug prone part but can be implemented using pure functions.
+Writing this part of the runtime in elm will decrease the labour of porting elm to a new target and, by utilising the type system footnote:[
+    The rules of elm type system are too restrictive so we will have to play some tricks (using kernel code) to bypass some of the security that the runtime provides.
+    We can still use type checking to our advantage for the majority of the code we will write.
+    If the compiler checks the majority of our code for us, we can focus our energy and our time on reviewing and documenting the minority code that breaks the rules.
+    More on this later.
+], will lead to a correct and robust elm runtime.
+
+Harry.

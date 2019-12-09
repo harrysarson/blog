@@ -1,0 +1,9 @@
+baseURL = "https://harrysarson.github.io/blog/"
+languageCode = "en-us"
+title = "Harry Sarson's Thoughts"
+theme = "beautifulhugo"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

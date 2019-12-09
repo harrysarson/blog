@@ -1,20 +1,41 @@
+---
+title: "Why Platform Must Define Task"
+date: 2019-11-21T20:00:00Z
+draft: false
+---
+
+<style>
+
+span:before {
+  display: block;
+  position: absolute;
+  content: " ";
+  margin-top: -285px;
+  height: 285px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+</style>
+
 # Why `Platform` must define `Task`
 
-> The examples in this post use elm 0.19.1 and elm/core 1.0.2.
+> The examples in this post uses `elm 0.19.1` and `elm/core 1.0.2`.
 
 I have been investing the runtime of the [elm programming language](https://elm-lang.org), mainly to see if it is possible to write more of the logic of the runtime in elm code, rather than in JavaScript "kernel code".
 As part of this investigation I replaced the definition of the `Task` type documented [here](https://package.elm-lang.org/packages/elm/core/latest/Task) and [here](https://package.elm-lang.org/packages/elm/core/latest/Platform#Task).
 Currently, the `Platform` module defiens the `Task` type as follows
-
 ```elm
 type Task err ok = Task
 ```
 
+<span id="a1"></span>
 This is possibly the most important type in the elm runtime and yet, as far as elm code can tell, contains no data.
-This is a stub definition, elm's typechecker can use it to verify that elm code using `Task`s is written correctly&nbsp;<span id="a1">[[1]](#f1)</span>.
+This is a stub definition, elm's typechecker can use it to verify that elm code using `Task`s is written correctly&nbsp;[[1]](#f1).
+<span id="a2"></span>
 
 My goal is to create a runtime for elm mostly written in elm, and so the definition of the `Task` type seemed a good place to start.
-After much iteration&nbsp;<span id="a2">[[2]](#f2)</span> I settled on the following definition of a `Task` which I placed in a new module `Platform.Scheduler`.
+After much iteration&nbsp;[[2]](#f2) I settled on the following definition of a `Task` which I placed in a new module `Platform.Scheduler`.
 
 ```elm
 module Platform.Scheduler exposing (Task(..), DoneCallback, TryAbortAction)

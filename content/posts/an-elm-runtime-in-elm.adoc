@@ -26,7 +26,7 @@ The diagram below summarises these interactions.
 My claim is that most of the work done by the elm runtime consists of piping data between the various components.
 I have marked in blue ink all the routes that the runtime passes data along.
 
-image::/images/elm-runtime.jpg[The elm runtime in diagram form]
+image::../../images/elm-runtime.jpg[The elm runtime in diagram form]
 
 Currently, only the `APP` and `EVENT MANAGER` footnote:[Event managers require special elm syntax only available to core components.] components are written in elm.
 My hope is to write the `MANAGE STATE` component in elm too.

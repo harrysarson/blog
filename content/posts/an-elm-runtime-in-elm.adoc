@@ -8,7 +8,7 @@ draft: false
 Harry Sarson
 2019-11-22, elm 0.19.1
 
-NOTE: I am writing this post in response to a comment on my link:./2019-11-21-why-platform-must-define-task.md[last post] suggesting that, as a platform-y thing, the elm runtime should be written platform specific code.
+NOTE: I am writing this post in response to a comment on my link:../why-platform-must-define-task[last post] suggesting that, as a platform-y thing, the elm runtime should be written platform specific code.
 
 The elm runtime must do three things:
 

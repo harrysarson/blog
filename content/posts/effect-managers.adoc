@@ -1,0 +1,78 @@
+---
+title: "Effect modules in elm"
+date: 2020-01-01T11:00:00Z
+draft: false
+---
+
+= Effect modules in elm
+Harry Sarson
+2020-01-01, elm 0.19.1
+
+For every action performed by an elm program (for example making a http request) and every event the program wishes to listen to (for example running code after a delay) there must be an event module responsible.
+
+An effect module is an elm module that
+
+1. Uses a different syntax in the first line of the file.
+2. Has access to one or two special functions.
+3. Must define some functions with specific names and type signatures.
+
+== Effect module syntax
+
+The first line of an effect modules takes the following form
+
+[source,elm]
+----
+effect module ModuleName where { command = MyCmd } exposing (..)
+----
+
+`MyCmd` (the type can have any name, we will use the name `MyCmd` as an example) must be a type defined in the module with one generic type parameter.
+The elm compiler will generate a special function `ModuleName.command` (the function is private to the module) with the type signature
+
+[source,elm]
+----
+command : MyCmd msg -> Cmd msg
+----
+
+These special functions are the only way to create a command in elm.
+
+== Actions in elm
+
+``elm/core:Task.platform```'s documentation has link:https://package.elm-lang.org/packages/elm/core/latest/Task#perform[the following] to say about taking a task (a description of an action) getting the runtime to actually perform the action.
+
+> Like I was saying in the Task documentation, just having a Task does not mean it is done. We must command Elm to perform the task:
+
+and
+
+> So we have changed a task like "make delicious lasagna" into a command like "Hey Elm, make delicious lasagna and give it to my update function as a Msg value."
+
+So to perform an action we have to create a `Task` describing that action, convert that `Task` into a `Cmd` and pass it to the elm runtime.
+(It is also possible to perform actions by creating a `Cmd` directly, and passing that to the elm runtime.)
+What this documentation does not explain is how the elm runtime handles commands and subscriptions.
+Neither does the official documentation describe what a command is -- it only what it does.
+Understanding what a command is and how the runtime processes commands will shed light on what an event module is.
+
+== Commands
+
+In elm, a `Cmd msg` contains data that an effect module wishes to send to itself and a key which tells the elm runtime which effect module it needs to pass the data back to.
+The data contained within a `Cmd msg` is the value of `MyCmd msg` that was passed a the argument to the compiler generated `ModuleName.command` function.
+
+
+== On effects
+
+Effect modules must define a number of functions (the compiler will complain if an effect module does not).
+The most important of these functions is `onEffects` which has the following type signature
+
+[source,elm]
+----
+onEffects : Router appMsg selfMsg -> List (MyCmd appMsg) -> state -> Task Never state
+----
+
+The `Router` argument is a value of a special elm type (link:https://package.elm-lang.org/packages/elm/core/latest/Platform#Router[defined in `elm:core/Platform`]) that is passed to this function by the runtime that allows the function to send messages to the app (i.e. calling the `update` function).
+The second argument consists of the data contained within all commands sent to the runtime from the app.
+Lastly, the `onEffects` function takes some state and must return a `Task` which will eventually produce a new state.
+This way, the effect module has its own state that it can manage independently of the application.
+
+
+---
+
+Harry.

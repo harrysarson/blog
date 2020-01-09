@@ -1,0 +1,15 @@
+---
+title: "On elm/time's subscription API"
+date: 2020-01-09T22:25:23+00:00
+draft: true
+---
+
+= On elm/time's subscription API
+Harry Sarson
+2020-01-08, elm 0.19.1
+
+hhm, I am not convinced by the current API. Specifically, `Time.every` is really confusing.
+
+Can I suggest a better option?
+
+Harry.

@@ -1,0 +1,118 @@
+---
+title: "A wish list for the elm-in-elm CLI"
+date: 2020-01-31T22:00:00+00:00
+---
+
+= A wish list for the elm-in-elm CLI
+Harry Sarson
+2020-01-31
+
+How should we design the elm-in-elm command line interface?
+I suggest that the design should provide
+
+== A pure interface
+
+At the core of the design should be a command that is as pure as possible.
+The compiler takes some (elm) files and produces some (javascript) files.
+Given the same input files the compiler produces the same output files.
+This command should not try to connect to the internet, read the `elm.json` file or try to fetch packages from a cache.
+All the input files (including packages) that it needs must be provided as arguments to the command footnote:[
+    Think of using `gcc main.c -lcurl` to compile your c program whilst linking the `libcurl.a` library (installed using `sudo apt install libcurl4-openssl-dev`).
+].
+
+== A high level command
+
+Using a low level compiler CLI directly quickly gets cumbersome and users reach for higher level commands to build actual software.
+Traditionally, these higher level commands execute the lower level command as a sub-process.
+It may be preferable for elm-in-elm to use the library version of the lower level command rather than executing the command directly.
+This command can read the `elm.json` file, fetch the necessary packages, compile them footnote:[
+    Traditionally external code dependancies are compiled seperately and then these compiled artefacts are linked into the application.
+    Compilation times are generally decreased if recompiling the application does not require recompiling external code which will not change.
+]
+and pass them to the lower level command.
+
+== Support for common work-flows
+
+We could support common/encouraged work-flows by providing bespoke commands.
+For example, a test command that builds and runs all the tests for an application or package supports test driven work-flows.
+To flesh out how these extra commands would interact with each other, I think it worth considering a test command even if an implementation of such a command is a long way off.
+
+== My draft
+
+Threfore, a starting point for the CLI is three sub-commands.
+The following are draft man pages:
+
+```bash
+$ elm-in-elm --help
+A compiler for elm, written in elm.
+
+USAGE:
+    elm-in-elm [OPTIONS] [SUBCOMMAND]
+
+OPTIONS:
+    -V, --version           Print version info and exit
+        --list              List installed commands
+    -h, --help              Prints help information
+
+Some common elm-in-elm commands are (see all commands with --list):
+    compile     Compile an elm file
+    build       Build an elm application or library
+    test        Run the tests
+
+
+See 'elm-in-elm help <command>' for more information on a specific command.
+
+$ elm-in-elm help compile
+Compile an elm file.
+
+Usage: elm-in-elm compile [OPTIONS] INPUT
+
+Options:
+    -h, --help              Display this message
+    -L PATH                 Add a directory to the library search path.
+    -l NAME                 Link the generated crate(s) to the specified native
+                            library NAME.
+        --emit              Comma separated list of types of output for the
+                            compiler to emit. One of js or ast.
+    -o FILENAME             Write output to <filename>
+        --target TARGET     Target triple for which the code is compiled
+    -V, --version           Print version info and exit
+    -v, --verbose           Use verbose output
+
+Additional help:
+    --help -v               Print the full set of options elm-in-elm compile accepts
+
+
+$ elm-in-elm help build
+Build an elm application or package.
+
+Usage: elm-in-elm build [OPTIONS]
+
+Options:
+    -h, --help              Display this message
+    --example <NAME>...     Build the specified example
+    --test <NAME>...        Build the specified test target
+    --release               Build artifacts in release mode, with optimizations
+    --target <TRIPLE>       Build for the target triple
+    -V, --version           Print version info and exit
+    -v, --verbose           Use verbose output
+    -h, --help              Prints help information
+
+
+$ elm-in-elm help test
+Execute all tests.
+
+
+Usage: elm-in-elm test [OPTIONS]
+
+Options:
+    -h, --help              Display this message
+    --example <NAME>...     Test only the specified example
+    --test <NAME>...        Test only the specified test target
+    --target <TRIPLE>       Build for the target triple
+    -V, --version           Print version info and exit
+    -v, --verbose           Use verbose output
+    -h, --help              Prints help information
+```
+
+Harry.

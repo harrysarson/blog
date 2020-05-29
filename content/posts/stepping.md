@@ -1,9 +1,7 @@
 ---
-title: "Steppers"
+title: "Stepping inside the elm runtime"
 date: 2020-05-29
 ---
-
-# Steppers
 
 If you have ever wondered how the elm runtime works you may have traced the
 function calls required to create an application (for example

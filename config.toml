@@ -10,3 +10,7 @@ pygmentsUseClasses = true
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+
+enableGitInfo = true
+[Params]
+  commit = "https://github.com/harrysarson/blog/tree/"

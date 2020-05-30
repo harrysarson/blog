@@ -37,7 +37,7 @@ We have the following clues to help us work out the mystery:
 
    ```js
    var initPair = init(result.a);
-	var model = initPair.a;
+   var model = initPair.a;
    var stepper = stepperBuilder(sendToApp, model);
    ```
 

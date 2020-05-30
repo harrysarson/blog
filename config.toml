@@ -3,6 +3,9 @@ languageCode = "en-us"
 title = "Harry Sarson's Thoughts"
 theme = "beautifulhugo"
 
+pygmentsCodeFences = true
+pygmentsUseClasses = true
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]

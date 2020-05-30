@@ -6,7 +6,7 @@ date: 2020-05-29
 If you have ever wondered how the elm runtime works you may have traced the
 function calls required to create an application (for example
 `elm/core:Platform.worker` or `elm/browser:Browser.element`). If you do so you
-will end up at `elm/core:Elm.Kernel.Platform.intitialize`.
+will end up at `elm/core:Elm.Kernel.Platform.initialize`.
 
  The `initialize` function in the `elm/core` package is defined like
 this:
